@@ -18,26 +18,28 @@ class LoliconChat:
         self.groups_white_list = False
         self.users_white_list = False
 
-        self.chat_pool = ChatPool()
+        # self.chat_pool = ChatPool()
+
+        self.chat_pool = {}
 
     def new_chat_bot(self):
         logging.info("有一个新的 bot 出生了")
         return Chatbot(self.chat_bot_config)
 
-    def new_chat_thread(self, id: str, task_action):
+    # def new_chat_thread(self, id: str, task_action):
 
-        async def task(id: str, chat: dict):
-            if (id not in chat):
-                chat[id] = {"chatbot": self.new_chat_bot(), "isEditing": False}
+    #     async def task(id: str, chat: dict):
+    #         if (id not in chat):
+    #             chat[id] = {"chatbot": self.new_chat_bot(), "isEditing": False}
 
-            if (chat[id]["isEditing"]):
-                return
+    #         if (chat[id]["isEditing"]):
+    #             return
 
-            chat[id]["isEditing"] = True
+    #         chat[id]["isEditing"] = True
 
-            await task_action(chat[id])
+    #         await task_action(chat[id])
 
-        self.chat_pool.new_thread_task(asyncio.run, args=(task(id, self.chat_pool.chat),))
+    #     self.chat_pool.new_thread_task(asyncio.run, args=(task(id, self.chat_pool.chat),))
 
     def is_allowed(self, update: Update):
         if (not self.users_white_list and not self.groups_white_list):
@@ -77,27 +79,27 @@ class LoliconChat:
                 parse_mode=telegram.constants.ParseMode.MARKDOWN)
             props["isEditing"] = False
 
-        # if (update.effective_chat.id not in self.chat_bot):
-        #     self.chat_bot[update.effective_chat.id] = {"chatbot": self.new_chat_bot(), "isEditing": False}
+        if (update.effective_chat.id not in self.chat_pool):
+            self.chat_pool[update.effective_chat.id] = {"chatbot": self.new_chat_bot(), "isEditing": False}
 
-        # # 上个请求还没完时，不再处理新的请求
-        # if (self.chat_bot[update.effective_chat.id]["isEditing"]):
-        #     return
+        # 上个请求还没完时，不再处理新的请求
+        if (self.chat_pool[update.effective_chat.id]["isEditing"]):
+            return
 
-        # self.chat_bot[update.effective_chat.id]["isEditing"] = True
-        # await action(self.chat_bot[update.effective_chat.id])
-        self.new_chat_thread(update.effective_chat.id, action)
+        self.chat_pool[update.effective_chat.id]["isEditing"] = True
+        await action(self.chat_pool[update.effective_chat.id])
+        # self.new_chat_thread(update.effective_chat.id, action)
 
     async def refresh(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not self.is_allowed(update):
             logging.info(f'User {update.message.from_user.name} is not allowed to refresh the session')
             return
 
-        if update.effective_chat.id not in self.chat_bot:
+        if update.effective_chat.id not in self.chat_pool:
             await context.bot.send_message(chat_id=update.effective_chat.id, text="No session to refresh")
             return
 
-        self.chat_bot[update.effective_chat.id]["chatbot"].refresh_session()
+        self.chat_pool[update.effective_chat.id]["chatbot"].refresh_session()
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Done!")
 
     def get_response(self, text: str, chatbot: Chatbot):
@@ -115,6 +117,7 @@ class LoliconChat:
         application = ApplicationBuilder().token(self.config.bot_token).build()
 
         application.add_handler(CommandHandler('start', self.start))
+        application.add_handler(CommandHandler('chat', self.prompt))
         application.add_handler(CommandHandler('refresh', self.refresh))
         application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), self.prompt))
 
