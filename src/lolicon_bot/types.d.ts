@@ -13,12 +13,3 @@ export type OnContext = NarrowedContext<Context<Update>, Update.MessageUpdate<Re
 export type ChatType = 'private' | 'group'
 
 import type { ChatGPTConversation } from 'chatgpt';
-
-export interface SessionPool {
-  [key: string]: BotSession
-}[]
-
-export interface BotSession {
-  chatbot: ChatGPTConversation
-  isEditing: boolean
-}

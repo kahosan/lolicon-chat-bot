@@ -1,6 +1,6 @@
 import { ChatGPTAPI } from 'chatgpt';
 import dotenv from 'dotenv';
-import type { BotSession } from '@/lolicon_bot/types';
+import type { BotSession } from '@/types/session';
 
 dotenv.config();
 

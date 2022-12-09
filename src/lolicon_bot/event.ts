@@ -1,4 +1,6 @@
-import type { ChatType, CommandContext, OnContext, SessionPool } from './types';
+import type { ChatType, CommandContext, OnContext } from './types';
+import type { SessionPool } from '@/types/session';
+
 import { createChatbot, getReplyText, refreshChatbot } from '@/chatbot';
 
 const sessionPool: SessionPool = {};
