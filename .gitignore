@@ -1,3 +1,5 @@
-config.py
+node_modules
 
-.lolicon-chat
+dist
+
+.env

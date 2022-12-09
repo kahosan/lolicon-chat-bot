@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "target":"ESNext",
+    "module": "NodeNext",
+    "moduleResolution":"Node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "index.ts"],
+  "exclude": ["node_modules"],
+  "tsc-alias": {
+    "verbose": false,
+    "resolveFullPaths": true
+  }
+}

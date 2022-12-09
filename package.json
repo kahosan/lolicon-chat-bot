@@ -1,0 +1,35 @@
+{
+  "name": "lolicon-chat-bot",
+  "version": "0.0.1",
+  "description": "A chatGPT Telegram Bot",
+  "type": "module",
+  "scripts": {
+    "dev": "esno index.ts",
+    "build": "swc index.ts -d dist && swc ./src -d dist && tsc-alias -p tsconfig.json",
+    "start": "npm run build && pm2 start dist/index.js --name lolicon-bot",
+    "kill": "pm2 kill",
+    "log": "pm2 log"
+  },
+  "keywords": [
+    "chatGPT",
+    "Telegram Bot"
+  ],
+  "author": "kaho",
+  "license": "MIT",
+  "dependencies": {
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.3.21",
+    "chatgpt": "^2.0.5",
+    "dotenv": "^16.0.3",
+    "esno": "^0.16.3",
+    "pm2": "^5.2.2",
+    "telegraf": "^4.11.2",
+    "tsc-alias": "^1.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.12",
+    "eslint": "^8.29.0",
+    "eslint-config-kaho": "^0.9.4",
+    "typescript": "^4.9.4"
+  }
+}

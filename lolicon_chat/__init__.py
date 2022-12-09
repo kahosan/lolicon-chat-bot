@@ -1,1 +1,0 @@
-from .lolicon_chat import *
