@@ -6,5 +6,4 @@ export interface SessionPool {
 
 export interface BotSession {
   chatbot: ChatGPTConversation
-  isEditing: boolean
 }
