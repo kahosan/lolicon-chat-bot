@@ -30,6 +30,7 @@ export async function chatHandler(ctx: CommandContext) {
     if (botSession.isEditing) {
       ctx.sendMessage('还在打字中...', { reply_to_message_id: replyId });
     } else {
+      botSession.isEditing = true;
       const replyText = await getReplyText(botSession, chatText);
       ctx.sendMessage(replyText, { reply_to_message_id: replyId, parse_mode: 'MarkdownV2' });
 
@@ -58,6 +59,7 @@ export async function replyHandler(ctx: OnContext) {
     if (botSession.isEditing) {
       ctx.sendMessage('还在打字中...', { reply_to_message_id: replyId });
     } else {
+      botSession.isEditing = true;
       const replyText = await getReplyText(botSession, chatText);
       ctx.sendMessage(replyText, { reply_to_message_id: replyId, parse_mode: 'MarkdownV2' });
 

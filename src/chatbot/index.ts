@@ -10,7 +10,7 @@ export async function createChatbot() {
   });
 
   // refresh session
-  await chatbot.ensureAuth();
+  // await chatbot.ensureAuth();
 
   // get new chat instance
   const conversation = chatbot.getConversation();
@@ -26,7 +26,6 @@ export async function refreshChatbot(api: ChatGPTAPI) {
 }
 
 export async function getReplyText(bot: BotSession, text: string) {
-  bot.isEditing = true;
   const replyText = await bot.chatbot.sendMessage(text);
   bot.isEditing = false;
 
