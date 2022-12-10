@@ -1,4 +1,7 @@
 import { loliconBot } from '@/lolicon_bot';
 
 loliconBot()
-  .launch();
+  .launch()
+  .catch((e) => {
+    console.error(e);
+  });

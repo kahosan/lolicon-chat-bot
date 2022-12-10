@@ -3,7 +3,6 @@ import { ChatGPTAPI } from 'chatgpt';
 import dotenv from 'dotenv';
 
 import type { BotSession } from '@/types/session';
-import type { CommandContext } from '@/types/bot_context';
 
 dotenv.config();
 
@@ -28,13 +27,8 @@ export async function refreshChatbot(api: ChatGPTAPI) {
   return await api.ensureAuth();
 }
 
-export async function getReplyText(bot: BotSession, text: string, ctx: CommandContext) {
-  try {
-    const replyText = await bot.chatbot.sendMessage(text);
+export function getReplyText(bot: BotSession, text: string) {
+  const replyText = bot.chatbot.then(chatbot => chatbot.sendMessage(text));
 
-    return replyText;
-  } catch (error) {
-    console.error(error);
-    ctx.sendMessage('报错了', { reply_to_message_id: ctx.message.message_id });
-  }
+  return replyText;
 }
