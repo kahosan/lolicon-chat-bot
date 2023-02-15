@@ -46,7 +46,7 @@ export async function chatHandler(ctx: CommandContext) {
       console.info(`--prompt: ${prompt}\n--reply: ${res.text}`);
       botSession.isEditing = false;
 
-      sessionPool[chatId].parentMessageId = res.parentMessageId;
+      sessionPool[chatId].parentMessageId = res.id;
       sessionPool[chatId].conversationId = res.conversationId;
     })
     .catch((error) => {

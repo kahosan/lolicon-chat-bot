@@ -10,6 +10,6 @@ export async function createChatbot() {
   return new ChatGPTAPI({ apiKey: process.env.API_KEY ?? '' });
 }
 
-export async function getReplyText({ chatbot }: BotSession, text: string, options: SendMessageOptions) {
-  return await chatbot.sendMessage(text, options);
+export function getReplyText({ chatbot }: BotSession, text: string, options: SendMessageOptions) {
+  return chatbot.sendMessage(text, options);
 }
