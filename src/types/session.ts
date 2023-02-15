@@ -1,10 +1,10 @@
-import type { ChatGPTConversation } from 'chatgpt';
+import type { ChatGPTAPI, SendMessageOptions } from 'chatgpt';
 
 export interface SessionPool {
-  [key: string]: BotSession
+  [chatId: string]: BotSession & SendMessageOptions
 }
 
 export interface BotSession {
-  chatbot: Promise<ChatGPTConversation>
+  chatbot: ChatGPTAPI
   isEditing: boolean
 }

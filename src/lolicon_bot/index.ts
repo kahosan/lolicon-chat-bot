@@ -3,7 +3,7 @@ import { message } from 'telegraf/filters';
 
 import dotenv from 'dotenv';
 
-import { chatHandler, refreshHandler, replyHandler } from './event';
+import { chatHandler, refreshHandler } from './event';
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ export function loliconBot() {
   /**
    * reply_to_message
    */
-  loliconBotInstance.on(message('text'), ctx => replyHandler(ctx));
+  loliconBotInstance.on(message('text'), ctx => chatHandler(ctx));
 
   console.info('bot is launch');
   return loliconBotInstance;

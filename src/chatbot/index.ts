@@ -1,34 +1,15 @@
+import type { SendMessageOptions } from 'chatgpt';
 import { ChatGPTAPI } from 'chatgpt';
-
 import dotenv from 'dotenv';
-
 import type { BotSession } from '@/types/session';
 
 dotenv.config();
 
 export async function createChatbot() {
-  const chatbot = new ChatGPTAPI({
-    sessionToken: process.env.SESSION_TOKEN || ''
-  });
-
-  // refresh session
-  await chatbot.ensureAuth();
-
   // get new chat instance
-  const conversation = chatbot.getConversation();
-  return conversation;
+  return new ChatGPTAPI({ apiKey: process.env.API_KEY ?? '' });
 }
 
-export async function checkChatbotAuthenticated(api: ChatGPTAPI) {
-  return await api.getIsAuthenticated();
-}
-
-export async function refreshChatbot(api: ChatGPTAPI) {
-  return await api.ensureAuth();
-}
-
-export function getReplyText(bot: BotSession, text: string) {
-  const replyText = bot.chatbot.then(chatbot => chatbot.sendMessage(text));
-
-  return replyText;
+export async function getReplyText({ chatbot }: BotSession, text: string, options: SendMessageOptions) {
+  return await chatbot.sendMessage(text, options);
 }
