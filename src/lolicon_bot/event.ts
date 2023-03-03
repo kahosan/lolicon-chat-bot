@@ -1,4 +1,4 @@
-// import type { ChatType } from './types';
+import { whiteList } from './util';
 import type { SessionPool } from '@/types/session';
 import type { CommandContext } from '@/types/bot_context';
 
@@ -7,17 +7,17 @@ import { createChatbot, getReplyText } from '@/chatbot';
 const sessionPool: SessionPool = {};
 
 export async function chatHandler(ctx: CommandContext) {
-  // const chatType: ChatType = ctx.chat.type === 'private' ? 'private' : 'group';
   const chatId = ctx.chat.id;
   const replyId = ctx.message.message_id;
+  const message = ctx.message.text;
 
-  const prompt = ctx.message.text.split('/chat ')[1] ?? ctx.message.text;
+  const prompt = message.startsWith('/chat') ? message.split('/chat')[1] : message;
 
-  // TODO 私聊以后做
-  // if (chatType === 'private') {
-  //   ctx.reply('私聊以后做');
-  //   return;
-  // }
+  // 白名单验证
+  if (!whiteList.includes(chatId)) {
+    ctx.sendMessage('403 Forbidden');
+    return;
+  }
 
   // 每一次调用 `/chat` 都会创建一个新的会话
   if (!sessionPool[chatId]) {
@@ -30,7 +30,6 @@ export async function chatHandler(ctx: CommandContext) {
   const botSession = sessionPool[chatId];
 
   const options = {
-    conversationId: sessionPool[chatId].conversationId,
     parentMessageId: sessionPool[chatId].parentMessageId
   };
 
@@ -47,7 +46,6 @@ export async function chatHandler(ctx: CommandContext) {
       botSession.isEditing = false;
 
       sessionPool[chatId].parentMessageId = res.id;
-      sessionPool[chatId].conversationId = res.conversationId;
     })
     .catch((error) => {
       ctx.sendMessage('报错了', { reply_to_message_id: replyId });
@@ -55,7 +53,6 @@ export async function chatHandler(ctx: CommandContext) {
       botSession.isEditing = false;
 
       sessionPool[chatId].parentMessageId = undefined;
-      sessionPool[chatId].conversationId = undefined;
     });
 }
 
