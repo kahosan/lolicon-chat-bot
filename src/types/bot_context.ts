@@ -2,7 +2,7 @@ import type { NarrowedContext } from 'telegraf/typings/context';
 import type Context from 'telegraf/typings/context';
 import type { Message, Update } from 'telegraf/typings/core/types/typegram';
 
-export type CommandContext = NarrowedContext<Context<Update>, {
+export type EventContext = NarrowedContext<Context<Update>, {
   message: Update.New & Update.NonChannel & Message.TextMessage
   update_id: number
 }>;

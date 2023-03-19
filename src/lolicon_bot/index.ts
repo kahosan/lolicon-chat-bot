@@ -6,7 +6,13 @@ import dotenv from 'dotenv';
 
 import type { Update } from 'telegraf/typings/core/types/typegram';
 import type { MaybePromise } from 'telegraf/typings/util';
-import { chatHandler, refreshHandler } from './event';
+
+import { chatHandler } from './events/chat';
+import { refreshHandler } from './events/refresh';
+import { cleanSystemHandler } from './events/clean_system';
+import { setSystemHandler } from './events/set_system';
+import { setParamsHandler } from './events/set_params';
+import { cleanParamsHandler } from './events/clean_params';
 
 dotenv.config();
 
@@ -15,12 +21,32 @@ export function loliconBot() {
   /**
    * command `/chat`
    */
-  loliconBotInstance.command('chat', ctx => chatHandler(ctx));
+  loliconBotInstance.command('chat', chatHandler);
 
   /**
    * commnad `/refresh`
    */
-  loliconBotInstance.command('refresh', ctx => refreshHandler(ctx));
+  loliconBotInstance.command('refresh', refreshHandler);
+
+  /**
+   * set system message
+   */
+  loliconBotInstance.command('set_system', setSystemHandler);
+
+  /**
+     * clean system message
+     */
+  loliconBotInstance.command('clean_system', cleanSystemHandler);
+
+  /**
+     * set completion params
+     */
+  loliconBotInstance.command('set_params', setParamsHandler);
+
+  /**
+     * clean completion params
+     */
+  loliconBotInstance.command('clean_params', cleanParamsHandler);
 
   /**
    * reply_to_message
