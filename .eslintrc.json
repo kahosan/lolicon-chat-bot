@@ -1,0 +1,14 @@
+{
+  "root": true,
+  "ignorePatterns": ["dist"],
+  "overrides": [
+    {
+      "files": ["**/*.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.json",
+        "sourceType": "module"
+      },
+      "extends": ["kaho/ts"]
+    }
+  ]
+}

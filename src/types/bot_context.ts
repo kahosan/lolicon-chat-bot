@@ -1,5 +1,4 @@
-import type { NarrowedContext } from 'telegraf/typings/context';
-import type Context from 'telegraf/typings/context';
+import type { NarrowedContext, Context} from 'telegraf/typings/context';
 import type { Message, Update } from 'telegraf/typings/core/types/typegram';
 
 export type EventContext = NarrowedContext<Context<Update>, {

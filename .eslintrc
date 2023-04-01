@@ -1,6 +1,0 @@
-{
-  "extends": "kaho/ts",
-  "rules": {
-    "no-console": "off",
-  }
-}
