@@ -14,10 +14,25 @@ import { setSystemHandler } from './events/set_system';
 import { setParamsHandler } from './events/set_params';
 import { cleanParamsHandler } from './events/clean_params';
 
+import { whiteList } from './util';
+
 dotenv.config();
 
 export function loliconBot() {
   const loliconBotInstance = new Telegraf(process.env.BOT_TOKEN || '');
+
+  /**
+   * middleware whitelist verification
+   */
+  loliconBotInstance.use((ctx, next) => {
+    const chatId = ctx.chat?.id ?? 0;
+
+    if (whiteList.includes(chatId))
+      return next();
+
+    ctx.sendMessage('403 Forbidden');
+  });
+
   /**
    * command `/chat`
    */
@@ -63,5 +78,5 @@ export function loliconBot() {
 }
 
 function TelegrafErrorHandler(err: unknown, ctx: Context<Update>): MaybePromise<void> {
-  ctx.sendMessage(`报错了: ${err}`);
+  ctx.sendMessage(`报错了: ${err as string}`);
 }

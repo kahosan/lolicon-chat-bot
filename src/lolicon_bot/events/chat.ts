@@ -1,5 +1,4 @@
 import type { SendMessageOptions } from 'chatgpt';
-import { whiteList } from '../util';
 
 import { getBotSession, getChatId, getMessageText, getReplyId, sessionPool } from './common';
 
@@ -13,12 +12,6 @@ export async function chatHandler(ctx: EventContext) {
   const message = getMessageText(ctx);
 
   const prompt = message.startsWith('/chat') ? message.split('/chat')[1] : message;
-
-  // 白名单验证
-  if (!whiteList.includes(chatId)) {
-    ctx.sendMessage('403 Forbidden');
-    return;
-  }
 
   // 每一次调用 `/chat` 都会创建一个新的会话
   let botSession = getBotSession(chatId);
