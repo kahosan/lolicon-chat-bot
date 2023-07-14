@@ -1,7 +1,17 @@
+import type { BotType as ChatBotType } from '@/chatbot';
 import type { EventContext } from '@/types/bot_context';
 import type { SessionPool } from '@/types/session';
 
 export const sessionPool: SessionPool = {};
+
+export let chatBotType: ChatBotType = 'GPT';
+
+export function changeChatBotType(type: string) {
+  if (type === 'GPT' || type === 'Bard')
+    chatBotType = type;
+  else
+    return 'Invalid bot type';
+}
 
 export function getBotSession(chatId: number) {
   return sessionPool[chatId];

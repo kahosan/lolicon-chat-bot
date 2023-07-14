@@ -4,7 +4,7 @@
     "resolveJsonModule": true,
     "outDir": "dist",
     "target":"ESNext",
-    "module": "NodeNext",
+    "module": "ESNext",
     "moduleResolution":"Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

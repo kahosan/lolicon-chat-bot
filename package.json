@@ -18,18 +18,19 @@
   "license": "MIT",
   "dependencies": {
     "@swc/cli": "^0.1.62",
-    "@swc/core": "^1.3.41",
-    "chatgpt": "^5.1.2",
-    "dotenv": "^16.0.3",
+    "@swc/core": "^1.3.69",
+    "bard-ai": "^1.5.2",
+    "chatgpt": "^5.2.5",
+    "dotenv": "^16.3.1",
     "esno": "^0.16.3",
     "pm2": "^5.3.0",
     "telegraf": "^4.12.2",
-    "tsc-alias": "^1.8.3"
+    "tsc-alias": "^1.8.7"
   },
   "devDependencies": {
-    "@types/node": "^18.15.3",
-    "eslint": "^8.36.0",
-    "eslint-config-kaho": "^0.9.7",
+    "@types/node": "^18.16.19",
+    "eslint": "^8.44.0",
+    "eslint-config-kaho": "^1.1.3",
     "typescript": "^4.9.5"
   }
 }

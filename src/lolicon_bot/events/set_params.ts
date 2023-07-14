@@ -5,7 +5,7 @@ import type { EventContext } from '@/types/bot_context';
 export async function setParamsHandler(ctx: EventContext) {
   const chatId = getChatId(ctx);
   const replyId = getReplyId(ctx);
-  const params = getMessageText(ctx).split('/set_params').at(1) ?? '';
+  const params = getMessageText(ctx).split('/set_params').at(1)?.trim() ?? '';
 
   try {
     const parseParams = JSON.parse(params) as ChatGPTAPIOptions['completionParams'];

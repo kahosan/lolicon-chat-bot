@@ -4,15 +4,17 @@ import { message } from 'telegraf/filters';
 
 import dotenv from 'dotenv';
 
-import type { Update } from 'telegraf/typings/core/types/typegram';
 import type { MaybePromise } from 'telegraf/typings/util';
 
-import { chatHandler } from './events/chat';
-import { refreshHandler } from './events/refresh';
-import { cleanSystemHandler } from './events/clean_system';
-import { setSystemHandler } from './events/set_system';
-import { setParamsHandler } from './events/set_params';
-import { cleanParamsHandler } from './events/clean_params';
+import {
+  changeChatBotHandler,
+  chatHandler,
+  cleanParamsHandler,
+  cleanSystemHandler,
+  refreshHandler,
+  setParamsHandler,
+  setSystemHandler
+} from './events';
 
 import { whiteList } from './util';
 
@@ -64,6 +66,11 @@ export function loliconBot() {
   loliconBotInstance.command('clean_params', cleanParamsHandler);
 
   /**
+     * change chat bot type
+     */
+  loliconBotInstance.command('change_chat_bot', changeChatBotHandler);
+
+  /**
    * reply_to_message
    */
   loliconBotInstance.on(message('text'), ctx => chatHandler(ctx));
@@ -77,6 +84,6 @@ export function loliconBot() {
   return loliconBotInstance;
 }
 
-function TelegrafErrorHandler(err: unknown, ctx: Context<Update>): MaybePromise<void> {
+function TelegrafErrorHandler(err: unknown, ctx: Context): MaybePromise<void> {
   ctx.sendMessage(`报错了: ${err as string}`);
 }

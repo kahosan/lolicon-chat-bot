@@ -1,3 +1,4 @@
+import type { Chat } from 'bard-ai';
 import type { ChatGPTAPI, SendMessageOptions } from 'chatgpt';
 
 export interface SessionPool {
@@ -5,6 +6,6 @@ export interface SessionPool {
 }
 
 export interface BotSession {
-  chatbot: ChatGPTAPI
+  chatbot: ChatGPTAPI | Chat | undefined
   isEditing: boolean
 }

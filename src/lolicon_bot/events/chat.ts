@@ -1,6 +1,6 @@
 import type { SendMessageOptions } from 'chatgpt';
 
-import { getBotSession, getChatId, getMessageText, getReplyId, sessionPool } from './common';
+import { chatBotType, getBotSession, getChatId, getMessageText, getReplyId, sessionPool } from './common';
 
 import type { EventContext } from '@/types/bot_context';
 
@@ -11,14 +11,14 @@ export async function chatHandler(ctx: EventContext) {
   const replyId = getReplyId(ctx);
   const message = getMessageText(ctx);
 
-  const prompt = message.startsWith('/chat') ? message.split('/chat')[1] : message;
+  const prompt = (message.startsWith('/chat') ? message.split('/chat')[1] : message).trim();
 
   // 每一次调用 `/chat` 都会创建一个新的会话
   let botSession = getBotSession(chatId);
 
   if (!botSession) {
     botSession = {
-      chatbot: await createChatbot(),
+      chatbot: await createChatbot(chatBotType),
       isEditing: false
     };
 
@@ -39,11 +39,17 @@ export async function chatHandler(ctx: EventContext) {
 
   try {
     const res = await getReplyText(botSession, prompt, options);
-    ctx.sendMessage(res.text, { reply_to_message_id: replyId, parse_mode: 'Markdown' });
-    console.info(`--prompt: ${prompt}\n--reply: ${res.text}`);
-    botSession.isEditing = false;
+    if (typeof res === 'string') {
+      ctx.sendMessage(res, { reply_to_message_id: replyId, parse_mode: 'Markdown' });
+      console.info(`--prompt: ${prompt}\n--reply: ${res}`);
+      botSession.isEditing = false;
+    } else if ('text' in res) {
+      ctx.sendMessage(res.text, { reply_to_message_id: replyId, parse_mode: 'Markdown' });
+      console.info(`--prompt: ${prompt}\n--reply: ${res.text}`);
+      botSession.isEditing = false;
 
-    botSession.parentMessageId = res.id;
+      botSession.parentMessageId = res.id;
+    }
   } catch (error) {
     ctx.sendMessage('报错了', { reply_to_message_id: replyId });
     console.error(error);
